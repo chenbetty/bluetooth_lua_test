@@ -13,7 +13,7 @@ function Timer(t)
 			--local diff=socket.gettime()*1000-init
 			local diff=monotonic:elapsed()			
 			while diff<t do
-				--print ("t:"..diff)
+				print ("t:"..diff)
 				coroutine.yield(diff)
 				--diff=os.difftime(os.time(),init)
 				--diff=socket.gettime()*1000-init
@@ -24,61 +24,59 @@ function Timer(t)
 	return co	 
     
 end 
-function nicetime(s)
-    local l = "s"
-    if s > 60 then
-        s = s / 60
-        l = "m"
-        if s > 60 then
-            s = s / 60
-            l = "h"
-            if s > 24 then
-                s = s / 24
-                l = "d" -- hmmm
-            end
-        end
-    end
-    if l == "s" then return string.format("%5.0f%s", s, l)
-    else return string.format("%5.2f%s", s, l) end
-end
 function untilTimeout(co)
 	while coroutine.status(co)~="dead" do
-		local t=socket.gettime() .. ""
-		local alltime, millisecond = t:match("^([%d]+)%.([%d]+)")
+		 --local t=socket.gettime() .. ""
+		--local alltime, millisecond = t:match("^([%d]+)%.([%d]+)")
       		 
 		--,os.date("%X", alltime)
 	  -- print("time passed",select(1,coroutine.resume(co)))
-		if alltime and millisecond and t then
-	 	print("time passed (ms)",select(2,coroutine.resume(co)),"\nnow time:",os.date("%x %X", alltime, alltime).."."..millisecond.." ori "..t) --select return value from index 2
+		 --[[if alltime and millisecond and t then
+	 	print("time passed (ms)",select(2,coroutine.resume(co)),"\nnow time:",os.date("%c", alltime).."."..millisecond.." ori "..t) --select return value from index 2
 		
-		end	   
+		end 
+		 ]]
 		-- print('',coroutine.status(co))
 	    --socket.sleep(0.02)
-		ztimer.sleep(10)  --ms
+		coroutine.resume(co)
+		--ztimer.sleep(1)  --ms
 	end
 	monotonic:stop()
 end
 
-local BTid,seg,timestamp,padding=1,12,13,69
-local msg= string.format("%01d", BTid)..string.format("%04d", seg)..string.format("%04d", timestamp)..string.format("%023d", padding)
-print (msg)
---[[
-print (socket.gettime())
-socket.sleep(0.001)
-print (socket.gettime())
-socket.sleep(0.08)
-print (socket.gettime())
-]]  
-local co=Timer(83)--ms
+local BTid,seg,padding=1,1,69
+local i=0
+while i<10 do
+local co=Timer(8)--ms
 coroutine.resume(co)
 --os.execute("")
 local file =io.open("/home/betty/Downloads/bluetest.txt",'a')
+local timestamp=socket.gettime() .. ""
+local alltime, millisecond = timestamp:match("^([%d]+)%.([%d]+)")
+
+alltime=os.date("%H%M%S",  alltime,  alltime,  alltime).."."..millisecond
+ 
+local msg= string.format("%01d", BTid).." "..string.format("%04d", seg).." "..string.format("%.4f", alltime) .." "..string.format("%023x", padding)
+--print (msg)
+file:write(msg.."\n")
+ 
+
+ 
+--os.execute("") 
+local timestamp=socket.gettime() .. ""
+local alltime, millisecond = timestamp:match("^([%d]+)%.([%d]+)")
+
+alltime=os.date("%H%M%S",  alltime,  alltime,  alltime).."."..millisecond
+ 
+local msg= string.format("%01d", BTid+3).." "..string.format("%04d", seg).." "..string.format("%.4f", alltime) .." "..string.format("%023x", padding)
+--print (msg)
 file:write(msg.."\n")
 
-file:close()
-
+file:close() 
+i=i+1
+seg=seg+1
 untilTimeout(co) 
-
+end 
 
 --[[
 local function is_timed_out(elapsed, timeout)
