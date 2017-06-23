@@ -73,7 +73,7 @@ function checksum(str)
 	
 end
 local limit=100 --ms 
-local BTid,seg,Signature,padding=1,1,"AA55","7465737420737472696e67206e6f20"
+local BTid,seg,Signature,padding=1,1,"AA55","7465737420737472696e67"
 local i=0
 while i<120 do
 local file =io.open("/home/betty/Downloads/bluetest.txt",'a')
@@ -85,8 +85,9 @@ local alltime, millisecond = timestamp:match("^([%d]+)%.([%d]+)")
 
 alltime=os.date("%H%M%S",  alltime,  alltime,  alltime) .. millisecond
  
-local msg= string.format("%02x", BTid) ..string.format("%08x", seg) ..string.format("%08x", alltime)  ..Signature..padding..string.format("%08x", seg)..string.format("%02x",checksum(padding..string.format("%08x", seg)))
+local msg= string.format("%02x", BTid) ..string.format("%08x", seg) ..string.format("%08x", alltime)  ..Signature..padding
 --print (msg)
+--[[
 local j=1
 local t = {}
 for i=1,#msg do
@@ -99,6 +100,7 @@ for i=1,#msg do
 	end 
 end
 msg =  table.concat(t,"")
+]]
 file:write(msg.."\n")
  
 
@@ -109,8 +111,9 @@ local alltime, millisecond = timestamp:match("^([%d]+)%.([%d]+)")
 
 alltime=os.date("%H%M%S",  alltime,  alltime,  alltime) ..millisecond
  
-local msg= string.format("%02x", BTid+1) ..string.format("%08x", seg) ..string.format("%08x", alltime)  ..Signature..padding..string.format("%08x", seg)..string.format("%02x",checksum(padding..string.format("%08x", seg)))
+local msg= string.format("%02x", BTid+1) ..string.format("%08x", seg) ..string.format("%08x", alltime)  ..Signature..padding
 --print (msg)
+--[[
 local j=1
 local t = {}
 for i=1,#msg do
@@ -123,6 +126,7 @@ for i=1,#msg do
 	end 
 end
 msg =  table.concat(t,"")
+]]
 file:write(msg.."\n")
 
 local timestamp=socket.gettime() .. ""
@@ -131,8 +135,9 @@ local alltime, millisecond = timestamp:match("^([%d]+)%.([%d]+)")
 
 alltime=os.date("%H%M%S",  alltime,  alltime,  alltime) ..millisecond
  
-local msg= string.format("%02x", BTid+2) ..string.format("%08x", seg) ..string.format("%08x", alltime)  ..Signature..padding..string.format("%08x", seg)..string.format("%02x",checksum(padding..string.format("%08x", seg)))
+local msg= string.format("%02x", BTid+2) ..string.format("%08x", seg) ..string.format("%08x", alltime)  ..Signature..padding
 --print (msg)
+--[[
 local j=1
 local t = {}
 for i=1,#msg do
@@ -145,6 +150,7 @@ for i=1,#msg do
 	end 
 end
 msg =  table.concat(t,"")
+]]
 file:write(msg.."\n\n")
 
  
@@ -161,8 +167,9 @@ local alltime, millisecond = timestamp:match("^([%d]+)%.([%d]+)")
 
 alltime=os.date("%H%M%S",  alltime,  alltime,  alltime) ..millisecond
  
-local msg= string.format("%02x", BTid+3) ..string.format("%08x", seg) ..string.format("%08x", alltime)  ..Signature..padding..string.format("%08x", seg)..string.format("%02x",checksum(padding..string.format("%08x", seg)))
+local msg= string.format("%02x", BTid+3) ..string.format("%08x", seg) ..string.format("%08x", alltime)  ..Signature..padding
 --print (msg)
+--[[
 local j=1
 local t = {}
 for i=1,#msg do
@@ -175,6 +182,7 @@ for i=1,#msg do
 	end 
 end
 msg =  table.concat(t,"")
+]]
 file:write(msg.."\n")
  
 
@@ -185,8 +193,9 @@ local alltime, millisecond = timestamp:match("^([%d]+)%.([%d]+)")
 
 alltime=os.date("%H%M%S",  alltime,  alltime,  alltime)..millisecond
  
-local msg= string.format("%02x", BTid+4) ..string.format("%08x", seg) ..string.format("%08x", alltime)  ..Signature..padding..string.format("%08x", seg)..string.format("%02x",checksum(padding..string.format("%08x", seg)))
+local msg= string.format("%02x", BTid+4) ..string.format("%08x", seg) ..string.format("%08x", alltime)  ..Signature..padding
 --print (msg)
+--[[
 local j=1
 local t = {}
 for i=1,#msg do
@@ -199,6 +208,7 @@ for i=1,#msg do
 	end 
 end
 msg =  table.concat(t,"")
+]]
 file:write(msg.."\n")
 
 local timestamp=socket.gettime() .. ""
@@ -207,8 +217,9 @@ local alltime, millisecond = timestamp:match("^([%d]+)%.([%d]+)")
 
 alltime=os.date("%H%M%S",  alltime,  alltime,  alltime)..millisecond
  
-local msg= string.format("%02x", BTid+5) ..string.format("%08x", seg) ..string.format("%08x", alltime)  ..Signature..padding..string.format("%08x", seg)..string.format("%02x",checksum(padding..string.format("%08x", seg)))
+local msg= string.format("%02x", BTid+5) ..string.format("%08x", seg) ..string.format("%08x", alltime)  ..Signature..padding
 --print (msg)
+--[[
 local j=1
 local t = {}
 for i=1,#msg do
@@ -221,6 +232,7 @@ for i=1,#msg do
 	end 
 end
 msg =  table.concat(t,"")
+]]
 file:write(msg.."\n\n")
 
 
