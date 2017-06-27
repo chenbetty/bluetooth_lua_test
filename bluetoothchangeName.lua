@@ -1,4 +1,3 @@
-
 local socket = require("socket")  -- for having a sleep function ( could also use os.execute(sleep 10))
 local ztimer   = require "lzmq.timer"
 local monotonic = ztimer.monotonic()
@@ -43,27 +42,31 @@ function untilTimeout(co)
 	end
 	monotonic:stop()
 end
-local limit=20 --ms
+
+io.output("/dev/ttyUSB1")
+local limit=100 --ms 
 while true do
 local i=0
-local seg,Signature,padding=1,"AA55","74657374"
+local seg,Signature,padding=1,"A5","54455354"
 
-while i<10 do
-  local co=Timer(limit)--ms
-  coroutine.resume(co)
-  local timestamp=socket.gettime() .. ""
-  timestamp=string.format("%.4f", timestamp)
-  local alltime, millisecond = timestamp:match("^([%d]+)%.([%d]+)")
-
-  alltime=os.date("%H%M%S",  alltime,  alltime,  alltime) .. millisecond
-  local msg= string.format("%04x", seg) ..string.format("%08x", alltime)  ..Sig$
-
-  os.execute("sudo echo -e 'AT+BTN="..msg.."\r\n' > /dev/ttyUSB1")
-  untilTimeout(co)
-  i=i+1
-  seg=seg+1
-
+  while i<65535 do   
+    local co=Timer(limit)--ms
+    coroutine.resume(co) 
+    local timestamp=socket.gettime()
+    timestamp=string.format("%.4f", timestamp)
+    local alltime, millisecond = timestamp:match("^([%d]+)%.([%d]+)")
+    
+    alltime=os.date("%H%M%S",  alltime,  alltime,  alltime) .. millisecond
+    
+    --print ("T:"..tostring(timestamp))
+    local msg= string.format("%04x", seg) ..string.format("%08x", alltime)  ..Signature..padding
+    
+    --os.execute("sudo echo -e 'AT+BTN="..msg.."\r\n' > /dev/ttyUSB1") 
+    io.write("AT+BTN="..msg.."\r\n") 
+    print (msg)
+    untilTimeout(co) 
+    i=i+1
+    seg=seg+1
+  
+  end	
 end
-end
-
-
